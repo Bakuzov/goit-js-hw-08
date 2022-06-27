@@ -21,10 +21,11 @@ function onFormSubmit(event) {
   }
   // console.log(formData);
 
-  localStorage.clear();
-  event.currentTarget.reset();
-
   console.log(currentDataUser);
+  event.currentTarget.reset();
+  localStorage.removeItem(STORAGE_KEY);
+  formData[input.name] = '';
+  formData[textarea.name] = '';
 }
 
 function onFormInput(event) {
@@ -37,9 +38,12 @@ function pushToInput() {
   const savedData = localStorage.getItem(STORAGE_KEY);
   const currentDataUser = JSON.parse(savedData);
 
-  if (!currentDataUser) {
-    return;
+  if (currentDataUser.email) {
+    formData[input.name] = currentDataUser.email;
+    input.value = currentDataUser.email;
   }
-  input.value = currentDataUser.email;
-  textarea.value = currentDataUser.message;
+  if (currentDataUser.message) {
+    formData[textarea.name] = currentDataUser.message;
+    textarea.value = currentDataUser.message;
+  }
 }
